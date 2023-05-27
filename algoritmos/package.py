@@ -1,42 +1,33 @@
 class Package:
-    objects: dict[
-        float, int
-    ]  # en caso de que haya objetos repetidos, cuento cuantos hay
+    inner: list[float]
     sum: float  # para no tener que recorrer todos los objetos
 
     def __init__(self, *args: float):
-        self.objects = {}
-        self.sum = 0
-        for obj in args:
-            self.add_object(obj)
+        self.inner = list(args)
+        self.sum = sum(args)
 
     def add_object(self, object: float):
-        self.objects[object] = self.objects.get(object, 0) + 1
+        self.inner.append(object)
         self.sum += object
 
     def fits(self, object: float):
         return self.sum + object <= 1
 
-    def remove_object(self, object: float):
-        self.objects[object] -= 1
-        if self.objects[object] == 0:
-            del self.objects[object]
-        self.sum -= object
+    def pop(self):
+        last = self.inner.pop()
+        self.sum -= last
 
     def size(self):
         return self.sum
 
-    def as_list(self):
-        return [x for y in [[k] * v for k, v in self.objects.items()] for x in y]
-
     def clone(self):
-        return Package(*self.as_list())
+        return Package(*self.inner)
 
     def __str__(self):
-        return str(self.as_list())
+        return str(self.inner)
 
     def __repr__(self) -> str:
         return str(self)
 
     def __len__(self):
-        return len(self.as_list())
+        return len(self.inner)

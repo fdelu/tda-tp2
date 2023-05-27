@@ -48,7 +48,7 @@ def __backtracking_rec(
             package.add_object(objects[i])
             result = __backtracking_rec(objects, i + 1, packages, new_best, debug)
             new_best = __best_solution(new_best, result)
-            package.remove_object(objects[i])
+            package.pop()
 
     # 2) Agregarlo a un nuevo envase
 
