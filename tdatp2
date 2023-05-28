@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 from algoritmos import Algorithm
 from time import time
@@ -20,7 +20,7 @@ def main():
 
     try:
         with open(args[1], "r") as f:
-            datos = [float(x) for x in f.readlines()]
+            datos = [float(x) for x in f.readlines()[2:]]
     except ValueError:
         print("Error, el archivo debe contener un número por línea")
     except FileNotFoundError:
