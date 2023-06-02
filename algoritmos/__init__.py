@@ -1,10 +1,10 @@
-from enum import StrEnum
+from enum import Enum
 from .backtracking import backtracking
 from .greedy_consigna import greedy_consigna
 from .greedy_alternativo import greedy_alternativo
 
 
-class Algorithm(StrEnum):
+class Algorithm(str, Enum):
     EXACT = "E"
     GREEDY = "A"
     GREEDY_ALT = "A2"

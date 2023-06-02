@@ -16,12 +16,12 @@ class Package:
     def pop(self):
         last = self.inner.pop()
         self.sum -= last
-
-    def size(self):
-        return self.sum
-
+        
     def clone(self):
         return Package(*self.inner)
+    
+    def __lt__(self, other: "Package"):
+        return self.sum < other.sum
 
     def __str__(self):
         return str(self.inner)
