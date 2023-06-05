@@ -165,6 +165,8 @@
     % Document parameters
     % Document title
     \title{informe}
+
+    \renewcommand{\contentsname}{Tabla de contenidos}
     
     
     
@@ -384,10 +386,6 @@
     
 
 \begin{document}
-    
-    \maketitle
-    
-    
 
     
     \hypertarget{trabajo-pruxe1ctico-2---problema-de-empaquetamiento}{%
@@ -398,6 +396,10 @@ Empaquetamiento}\label{trabajo-pruxe1ctico-2---problema-de-empaquetamiento}}
 
 \textbf{Alumnos:} - Felipe de Luca Andrea - 105646 - Francisco de Luca
 Andrea - 109794
+
+\hspace{1cm}
+\tableofcontents
+\newpage
 
     \hypertarget{definiciuxf3n-del-problema}{%
 \subsection{Definición del problema}\label{definiciuxf3n-del-problema}}
@@ -410,7 +412,7 @@ empaquetarlos usando la mínima cantidad de envases de capacidad 1.
 \subsection{Resolución}\label{resoluciuxf3n}}
 
     \hypertarget{demostrar-que-el-problema-de-empaquetamiento-es-np-completo.}{%
-\subsubsection{1) Demostrar que el problema de empaquetamiento es
+\subsubsection{Demostrar que el problema de empaquetamiento es
 NP-Completo.}\label{demostrar-que-el-problema-de-empaquetamiento-es-np-completo.}}
 
     El problema de decisión de este problema es el siguiente:
@@ -537,11 +539,11 @@ return len(restantes) == 0
 \end{enumerate}
 
     \hypertarget{programar-un-algoritmo-por-backtrackingfuerza-bruta-que-busque-la-soluciuxf3n-exacta-del-problema.-indicar-la-complejidad-del-mismo.-realizar-mediciones-del-tiempo-de-ejecuciuxf3n-y-realizar-gruxe1ficos-en-funciuxf3n-de-n.}{%
-\subsubsection{\texorpdfstring{2) Programar un algoritmo por
+\subsubsection{\texorpdfstring{Programar un algoritmo por
 Backtracking/Fuerza Bruta que busque la solución exacta del problema.
 Indicar la complejidad del mismo. Realizar mediciones del tiempo de
 ejecución, y realizar gráficos en función de
-\(n\).}{2) Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución, y realizar gráficos en función de n.}}\label{programar-un-algoritmo-por-backtrackingfuerza-bruta-que-busque-la-soluciuxf3n-exacta-del-problema.-indicar-la-complejidad-del-mismo.-realizar-mediciones-del-tiempo-de-ejecuciuxf3n-y-realizar-gruxe1ficos-en-funciuxf3n-de-n.}}
+\(n\).}{Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución, y realizar gráficos en función de n.}}\label{programar-un-algoritmo-por-backtrackingfuerza-bruta-que-busque-la-soluciuxf3n-exacta-del-problema.-indicar-la-complejidad-del-mismo.-realizar-mediciones-del-tiempo-de-ejecuciuxf3n-y-realizar-gruxe1ficos-en-funciuxf3n-de-n.}}
 
     El algoritmo se encuentra en el archivo
 \href{algoritmos/backtracking.py}{\texttt{algoritmos/backtracking.py}}.
@@ -701,7 +703,7 @@ Las mediciones y gráficos se realizan al final del informe.
 \end{enumerate}
 
     \hypertarget{considerar-el-siguiente-algoritmo-se-abre-el-primer-envase-y-se-empaqueta-el-primer-objeto-luego-por-cada-uno-de-los-objetos-restantes-se-prueba-si-cabe-en-el-envase-actual-que-estuxe1-abierto.-si-es-asuxed-se-lo-agrega-a-dicho-envase-y-se-sigue-con-el-siguiente-objeto.-si-no-entra-se-cierra-el-envase-actual-se-abre-uno-nuevo-que-pasa-a-ser-el-envase-actual-se-empaqueta-el-objeto-y-se-prosigue-con-el-siguiente.-este-algoritmo-sirve-como-una-aproximaciuxf3n-para-resolver-el-problema-de-empaquetamiento.-implementar-dicho-algoritmo-analizar-su-complejidad-y-analizar-cuuxe1n-buena-aproximaciuxf3n-es.-para-esto-considerar-lo-siguiente-sea-i-una-instancia-cualquiera-del-problema-de-empaquetamiento-y-zi-una-soluciuxf3n-uxf3ptima-para-dicha-instancia-y-sea-ai-la-soluciuxf3n-aproximada-se-define-fracaizi-leq-ra-para-todas-las-instancias-posibles.-calcular-ra-para-el-algoritmo-dado-demostrando-que-la-cota-estuxe1-bien-calculada.-realizar-mediciones-utilizando-el-algoritmo-exacto-y-la-aproximaciuxf3n-con-el-objetivo-de-verificar-dicha-relaciuxf3n.}{%
-\subsubsection{\texorpdfstring{3) Considerar el siguiente algoritmo: Se
+\subsubsection{\texorpdfstring{Considerar el siguiente algoritmo: Se
 abre el primer envase y se empaqueta el primer objeto, luego por cada
 uno de los objetos restantes se prueba si cabe en el envase actual que
 está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el
@@ -717,7 +719,7 @@ define \(\frac{A(I)}{z(I)} \leq r(A)\) para todas las instancias
 posibles. Calcular \(r(A)\) para el algoritmo dado, demostrando que la
 cota está bien calculada. Realizar mediciones utilizando el algoritmo
 exacto y la aproximación, con el objetivo de verificar dicha
-relación.}{3) Considerar el siguiente algoritmo: Se abre el primer envase y se empaqueta el primer objeto, luego por cada uno de los objetos restantes se prueba si cabe en el envase actual que está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el siguiente objeto. Si no entra, se cierra el envase actual, se abre uno nuevo que pasa a ser el envase actual, se empaqueta el objeto y se prosigue con el siguiente.   Este algoritmo sirve como una aproximación para resolver el problema de empaquetamiento. Implementar dicho algoritmo, analizar su complejidad, y analizar cuán buena aproximación es. Para esto, considerar lo siguiente: Sea I una instancia cualquiera del problema de empaquetamiento, y z(I) una solución óptima para dicha instancia, y sea A(I) la solución aproximada, se define \textbackslash frac\{A(I)\}\{z(I)\} \textbackslash leq r(A) para todas las instancias posibles. Calcular r(A) para el algoritmo dado, demostrando que la cota está bien calculada. Realizar mediciones utilizando el algoritmo exacto y la aproximación, con el objetivo de verificar dicha relación.}}\label{considerar-el-siguiente-algoritmo-se-abre-el-primer-envase-y-se-empaqueta-el-primer-objeto-luego-por-cada-uno-de-los-objetos-restantes-se-prueba-si-cabe-en-el-envase-actual-que-estuxe1-abierto.-si-es-asuxed-se-lo-agrega-a-dicho-envase-y-se-sigue-con-el-siguiente-objeto.-si-no-entra-se-cierra-el-envase-actual-se-abre-uno-nuevo-que-pasa-a-ser-el-envase-actual-se-empaqueta-el-objeto-y-se-prosigue-con-el-siguiente.-este-algoritmo-sirve-como-una-aproximaciuxf3n-para-resolver-el-problema-de-empaquetamiento.-implementar-dicho-algoritmo-analizar-su-complejidad-y-analizar-cuuxe1n-buena-aproximaciuxf3n-es.-para-esto-considerar-lo-siguiente-sea-i-una-instancia-cualquiera-del-problema-de-empaquetamiento-y-zi-una-soluciuxf3n-uxf3ptima-para-dicha-instancia-y-sea-ai-la-soluciuxf3n-aproximada-se-define-fracaizi-leq-ra-para-todas-las-instancias-posibles.-calcular-ra-para-el-algoritmo-dado-demostrando-que-la-cota-estuxe1-bien-calculada.-realizar-mediciones-utilizando-el-algoritmo-exacto-y-la-aproximaciuxf3n-con-el-objetivo-de-verificar-dicha-relaciuxf3n.}}
+relación.}{Considerar el siguiente algoritmo: Se abre el primer envase y se empaqueta el primer objeto, luego por cada uno de los objetos restantes se prueba si cabe en el envase actual que está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el siguiente objeto. Si no entra, se cierra el envase actual, se abre uno nuevo que pasa a ser el envase actual, se empaqueta el objeto y se prosigue con el siguiente.   Este algoritmo sirve como una aproximación para resolver el problema de empaquetamiento. Implementar dicho algoritmo, analizar su complejidad, y analizar cuán buena aproximación es. Para esto, considerar lo siguiente: Sea I una instancia cualquiera del problema de empaquetamiento, y z(I) una solución óptima para dicha instancia, y sea A(I) la solución aproximada, se define \textbackslash frac\{A(I)\}\{z(I)\} \textbackslash leq r(A) para todas las instancias posibles. Calcular r(A) para el algoritmo dado, demostrando que la cota está bien calculada. Realizar mediciones utilizando el algoritmo exacto y la aproximación, con el objetivo de verificar dicha relación.}}\label{considerar-el-siguiente-algoritmo-se-abre-el-primer-envase-y-se-empaqueta-el-primer-objeto-luego-por-cada-uno-de-los-objetos-restantes-se-prueba-si-cabe-en-el-envase-actual-que-estuxe1-abierto.-si-es-asuxed-se-lo-agrega-a-dicho-envase-y-se-sigue-con-el-siguiente-objeto.-si-no-entra-se-cierra-el-envase-actual-se-abre-uno-nuevo-que-pasa-a-ser-el-envase-actual-se-empaqueta-el-objeto-y-se-prosigue-con-el-siguiente.-este-algoritmo-sirve-como-una-aproximaciuxf3n-para-resolver-el-problema-de-empaquetamiento.-implementar-dicho-algoritmo-analizar-su-complejidad-y-analizar-cuuxe1n-buena-aproximaciuxf3n-es.-para-esto-considerar-lo-siguiente-sea-i-una-instancia-cualquiera-del-problema-de-empaquetamiento-y-zi-una-soluciuxf3n-uxf3ptima-para-dicha-instancia-y-sea-ai-la-soluciuxf3n-aproximada-se-define-fracaizi-leq-ra-para-todas-las-instancias-posibles.-calcular-ra-para-el-algoritmo-dado-demostrando-que-la-cota-estuxe1-bien-calculada.-realizar-mediciones-utilizando-el-algoritmo-exacto-y-la-aproximaciuxf3n-con-el-objetivo-de-verificar-dicha-relaciuxf3n.}}
 
     El algoritmo se encuentra en el archivo
 \href{algoritmos/greedy_consigna.py}{\texttt{algoritmos/greedy\_consigna.py}}.
@@ -789,7 +791,7 @@ impar.
 Las mediciones y gráficos se realizan al final del informe.
 
     \hypertarget{opcional-implementar-alguna-otra-aproximaciuxf3n-u-algoritmo-greedy-que-les-parezca-de-interuxe9s.-comparar-sus-resultados-con-los-dados-por-la-aproximaciuxf3n-del-punto-3.-indicar-y-justificar-su-complejidad.}{%
-\subsubsection{4) {[}Opcional{]} Implementar alguna otra aproximación (u
+\subsubsection{{[}Opcional{]} Implementar alguna otra aproximación (u
 algoritmo greedy) que les parezca de interés. Comparar sus resultados
 con los dados por la aproximación del punto 3. Indicar y justificar su
 complejidad.}\label{opcional-implementar-alguna-otra-aproximaciuxf3n-u-algoritmo-greedy-que-les-parezca-de-interuxe9s.-comparar-sus-resultados-con-los-dados-por-la-aproximaciuxf3n-del-punto-3.-indicar-y-justificar-su-complejidad.}}
