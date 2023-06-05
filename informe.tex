@@ -1,0 +1,1092 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{informe}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{trabajo-pruxe1ctico-2---problema-de-empaquetamiento}{%
+\section{Trabajo Práctico 2 - Problema de
+Empaquetamiento}\label{trabajo-pruxe1ctico-2---problema-de-empaquetamiento}}
+
+    Curso Buchwald \& Genender - 20231C
+
+\textbf{Alumnos:} - Felipe de Luca Andrea - 105646 - Francisco de Luca
+Andrea - 109794
+
+    \hypertarget{definiciuxf3n-del-problema}{%
+\subsection{Definición del problema}\label{definiciuxf3n-del-problema}}
+
+Dado un conjunto de \(n\) objetos cuyos tamaños son
+\(\{T_1, T_2, \dotsb , T_n\}\), con \(T_i \in (0, 1]\), se debe
+empaquetarlos usando la mínima cantidad de envases de capacidad 1.
+
+    \hypertarget{resoluciuxf3n}{%
+\subsection{Resolución}\label{resoluciuxf3n}}
+
+    \hypertarget{demostrar-que-el-problema-de-empaquetamiento-es-np-completo.}{%
+\subsubsection{1) Demostrar que el problema de empaquetamiento es
+NP-Completo.}\label{demostrar-que-el-problema-de-empaquetamiento-es-np-completo.}}
+
+    El problema de decisión de este problema es el siguiente:
+
+\begin{quote}
+Dados \(n\) objetos cuyos tamaños son \(\{T_1, T_2, \dotsb , T_n\}\),
+con \(T_i \in (0, 1]\), y un número \(k\), ¿es posible empaquetarlos en
+como mucho \(k\) envases de capacidad 1?
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{El problema es NP}
+
+  Dados:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Un conjunto de objetos: \(T = \{T_1, T_2, \dotsb , T_n\}\), con
+    \(T_i \in (0, 1]\)
+  \item
+    Una solución al problema, es decir, un conjunto de envases con los
+    objetos de \(T\): \(E = \{E_1, E_2, \dotsb, E_k\}\)
+  \item
+    La cantidad de envases: \(k = |E|\)
+  \end{itemize}
+
+  Debemos demostrar que existe un algoritmo polinomial que permita
+  verificar que la soluición \(E\) es válida. Es sencillo ver que este
+  algoritmo es polinomial: basta con recorrer todos los envases en \(E\)
+  verificando que la suma de los tamaños de los objetos en cada envase
+  sea menor o igual a 1, y que al terminar de recorrer todos los
+  envases, todos los objetos hayan sido empaquetados en exactamente un
+  envase. Esto se puede hacer en tiempo \(O(n)\) con el siguiente
+  algoritmo:
+
+\begin{verbatim}
+restantes = set(T)
+for cada envase en E:
+    suma = 0
+    for cada objeto en envase:
+        suma += tamaño del objeto
+        if objeto no está en restantes:
+            return False
+        restantes.remove(objeto)
+    if suma > 1:
+        return False
+return len(restantes) == 0
+\end{verbatim}
+\item
+  \textbf{El problema es NP-Completo}
+
+  Habiéndo demostrado que el problema es NP, podemos demostrar que es
+  NP-completo reduciéndo otro problema NP-Completo a este. Para ello,
+  vamos a utilizar el problema de \emph{Balanceo de carga}. Este
+  problema es NP-hard {[}1{]} y su problema de decisión es NP-completo
+  {[}2{]}. El problema de decisión es:
+
+  \begin{quote}
+  Dadas \(m'\) máquinas y \(n'\) trabajos, y cada trabajo toma tiempo
+  \(T_j' \in T'\), ¿es posible asignar los trabajos a las máquinas de
+  forma que el tiempo de ejecución de cada máquina sea menor o igual a
+  k'?
+  \end{quote}
+
+  Podemos reducirlo polinoimalmente al problema de empaquetamiento.
+  Notar que, para cualquier conjunto de trabajos \(A \subset T'\):
+  \[\sum_{t \in A} t \leq k' \Leftrightarrow \sum_{t \in A} \frac{t}{k'} \leq 1\]
+  Si evaluamos el problema de empaquetamiento donde los tamaños de cada
+  objeto son \(T_j = \frac{T_j'}{k'}\) en a lo sumo \(m'\) envases,
+  tenemos entonces que:
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    Si el problema de empaquetamiento tiene solución, significa que fue
+    posible asignar los objetos en \(m'\) envases de forma tal que la
+    suma en cada uno sea a lo sumo 1. Por lo tanto, si tomamos los
+    trabajos de cada envase y los asignamos a una máquina, el tiempo de
+    ejecución de cada máquina será menor o igual a \(k'\), dando como
+    resultado una solución válida del problema de balanceo de carga.
+    \[\text{Empaquetamiento} \Rightarrow \text{Balanceo de carga}\]
+  \item
+    De la misma manera, si el problema de balanceo de carga tiene una
+    solución, entonces el problema de empaquetamiento va a tenerla
+    también: se empaquetan los trabajos de cada máquina en un envase,
+    que como sus tiempos suman a lo sumo \(k'\), entonces los tamaños de
+    cada envase no superarán 1.
+    \[\text{Balanceo de carga} \Rightarrow \text{Empaquetamiento}\]
+  \end{enumerate}
+
+  Los casos donde no hay solución son sus contrarecíprocos.
+
+  \[\therefore \; \text{Empaquetamiento} \Leftrightarrow \text{Balanceo de carga}\]
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  De acuerdo a las
+  \href{https://docs.google.com/presentation/d/1m6JJo9rOFg5rjmrHq5EtqVjWz-xMNQKjPChE6MsQRTE/edit\#slide=id.g22c7a43fd5e_0_252}{diapositivas
+  de la cátedra}
+\item
+  El problema de decisión de balanceo de carga \(D(k')\) es NP-completo
+  ya que:
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \tightlist
+  \item
+    El problema de optimización es NP-hard
+  \item
+    El problema de decisión es NP: se puede implementar un algoritmo de
+    verificación polinomial. Es, de hecho, el mismo algoritmo que para
+    empaquetamiento solo que recorriendo trabajos en máquinas en vez de
+    objetos en envases, y verificando que la suma sea menor a \(k'\) en
+    vez de 1
+  \end{enumerate}
+\end{enumerate}
+
+    \hypertarget{programar-un-algoritmo-por-backtrackingfuerza-bruta-que-busque-la-soluciuxf3n-exacta-del-problema.-indicar-la-complejidad-del-mismo.-realizar-mediciones-del-tiempo-de-ejecuciuxf3n-y-realizar-gruxe1ficos-en-funciuxf3n-de-n.}{%
+\subsubsection{\texorpdfstring{2) Programar un algoritmo por
+Backtracking/Fuerza Bruta que busque la solución exacta del problema.
+Indicar la complejidad del mismo. Realizar mediciones del tiempo de
+ejecución, y realizar gráficos en función de
+\(n\).}{2) Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución, y realizar gráficos en función de n.}}\label{programar-un-algoritmo-por-backtrackingfuerza-bruta-que-busque-la-soluciuxf3n-exacta-del-problema.-indicar-la-complejidad-del-mismo.-realizar-mediciones-del-tiempo-de-ejecuciuxf3n-y-realizar-gruxe1ficos-en-funciuxf3n-de-n.}}
+
+    El algoritmo se encuentra en el archivo
+\href{algoritmos/backtracking.py}{\texttt{algoritmos/backtracking.py}}.
+A continuación un ejemplo de su ejecución:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{algoritmos}\PY{n+nn}{.}\PY{n+nn}{backtracking} \PY{k+kn}{import} \PY{n}{backtracking}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{99}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} El 1\PYZhy{}x es para pasar de [0, 1) a (0, 1]}
+\PY{n}{objects} \PY{o}{=}  \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{x}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tamaños: }\PY{l+s+si}{\PYZob{}}\PY{n}{objects}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{solution} \PY{o}{=} \PY{n}{backtracking}\PY{p}{(}\PY{n}{objects}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Mejor solución: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ envases}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{solution}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Tamaños: [0.328, 0.512, 0.175, 0.969, 0.192, 0.434, 0.702, 0.953, 0.009, 0.993,
+0.23, 0.253, 0.623, 0.506, 0.071, 0.605]
+
+Lower bound: 8
+Previous best: 16, new best: 9
+[[0.328, 0.512, 0.009, 0.071], [0.175, 0.192, 0.434], [0.969], [0.702, 0.23],
+[0.953], [0.993], [0.253, 0.623], [0.506], [0.605]]
+Previous best: 9, new best: 8
+[[0.328, 0.512, 0.009, 0.071], [0.175, 0.192, 0.623], [0.969], [0.434, 0.506],
+[0.702, 0.23], [0.953], [0.993], [0.253, 0.605]]
+
+Mejor solución: 8 envases
+[[0.328, 0.512, 0.009, 0.071], [0.175, 0.192, 0.623], [0.969], [0.434, 0.506],
+[0.702, 0.23], [0.953], [0.993], [0.253, 0.605]]
+    \end{Verbatim}
+
+    \textbf{Explicación del algoritmo}
+
+Se implementó un algoritmo por backtracking recursivo. En cada
+invocación recursiva, el algoritmo coloca el siguiente objeto en un
+envase. Para cada objeto, hay 2 opciones:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Colocar el objeto en uno de los envases preexistentes
+\item
+  Colocar el objeto en un nuevo envase
+\end{enumerate}
+
+De esta manera, se generan todas las combinaciones posibles de objetos
+en envases sin repetir soluciones. Cuando se recorrieron todos los
+objetos, se llegó a una solución válida y se devuelve la cantidad de
+paquetes.
+
+\textbf{Podas implementadas}
+
+\begin{itemize}
+\tightlist
+\item
+  Si ya se estan usando la misma o más cantidad de paquetes que la mejor
+  solución encontrada hasta el momento
+\item
+  Si la suma de los objetos en un envase supera 1 (directamente no se
+  agrega el objeto en ese envase)
+\item
+  Si mejor solución encontrada es igual a la cota inferior:
+  \[ z(I) \geq \left\lceil \sum\limits_{t \in T} t \right\rceil \]
+\end{itemize}
+
+\textbf{Complejidad computacional}
+
+Una forma sencilla de acotar la complejidad del algoritmo es considerar
+que la cantidad de paquetes nunca va a ser mayor a la cantidad de
+objetos. Si consideramos que tenemos \(n\) objetos para poner en a lo
+sumo \(n\) envases, entonces la complejidad del algoritmo es \(O(n^n)\):
+cada uno de los objetos en cualquiera de los (a lo sumo) \(n\) envases.
+
+Se puede encontrar una mejor cota considerando que la cantidad de
+paquetes nunca va a ser mayor a la cantidad de objetos colocados hasta
+el momento. Por como funciona el algoritmo, el primer objeto siempre se
+va a colocar en un paquete nuevo, el segundo objeto siempre se va a
+colocar en un paquete nuevo o en el mismo paquete que el primero, y así
+sucesivamente. De esta manera procesar el primer objeto requiere 1
+operación, procesar el segundo objeto requiere a lo sumo 2 operaciones,
+procesar el tercer objeto requiere a lo sumo 3 operaciones, y así
+sucesivamente. Por lo tanto, la complejidad del algoritmo queda acotada
+por \(O(n!)\).
+
+Podemos acotarlo aun mejor. Defino el tiempo que toma el algoritmo como
+\(T(n) = T_n(0, 0)\), donde \(T_n\) es la el tiempo del algoritmo
+recursivo dada la cantidad de objetos colocados hasta el momento
+\(i\in \mathbb{Z}, 0 < i < n\), y la cantidad de envases utilizados
+hasta el momento (menos 1) \(j \in \mathbb{Z}, 0 < j < n\). La ecuación
+de recurrencia del algoritmo \(T_n\) (sin considerar las podas) es: \[
+\left\{
+    \begin{array}{ll}
+        T_n(n, j) = O(1) \\
+        T_n(i, j) = j \times T(i + 1, j) + T(i + 1, j + 1) \text{, si } i < n
+    \end{array}
+\right.
+\]
+
+El término de \(j \times T(i + 1, j)\) representa los casos donde se
+intenta poner el objeto en uno de los envases existentes, y el término
+\(T(i + 1, j + 1)\) representa el caso donde se intenta poner el objeto
+en un nuevo envase. Cuando ya se colocaron todos los objetos
+(\(i = n\)), el algoritmo termina por lo que \(T_n(n, j) = O(1)\).
+
+Definiendo \(T'(i, j) = T_n(n-i, j)\), tenemos que \(T(n) = T'(n, 0)\) y
+podemos reescribir la ecuación de recurrencia como: \[
+\left\{
+    \begin{array}{ll}
+        T_n(0, j) = O(1) \\
+        T_n(i, j) = j \times T(i - 1, j) + T(i - 1, j + 1) \text{, si } i > 0
+    \end{array}
+\right.
+\]
+
+Esta ecuación de recurrencia \(T'(i, j)\) da como resultado lo que se
+conoce como \emph{número de r-Bell} {[}3{]} donde
+\(T'(i, j)=O(B_{n, r})\). De esta manera tenemos que el algoritmo de
+backtracking esta acotado por
+\(T(n) = T'(n, 0) = O(B_{n, 0}) = O(B_n)\), el enésimo número de Bell.
+Los números de Bell también se definen con otra ecuación de recurrencia
+más conocida, \(B_{n+1} = \sum\limits_{k=0}^n \binom{n}{k} B_k\). El
+enésimo número de Bell es el número de particiones de un conjunto de
+\(n\) elementos, es decir, cuantas formas hay de dividir un conjunto de
+\(n\) elementos en subconjuntos no vacíos: es exáctamente lo que hace el
+algoritmo de backtracking, probar todas las formas de dividir los
+objetos en envases. Es considerablemente menor que \(n!\), y está
+acotado {[}4{]} por \(B_n < \left(\frac{0.792n}{ln(n+1)}\right)^n\).
+
+Las mediciones y gráficos se realizan al final del informe.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  \href{https://cs.uwaterloo.ca/journals/JIS/VOL14/Mezo/mezo9.pdf}{Mezö,
+  I. (2011). ``The r-Bell Numbers''. \emph{Journal of Integer
+  Sequences}, \textbf{14} (11.1.1): pp.~1-14.}
+
+  En este paper se menciona la definición de los números de r-Bell y su
+  relación con los números de Bell. en la página 12 se prueba la
+  equivalencia de la definición de los números de r-Bell dada por el
+  paper con la ecuación de recurrencia encontrada para el algoritmo.
+\item
+  \href{https://www.openu.ac.il/lists/mediaserver_documents/personalsites/tamirtassa/lp_moments.pdf}{Berend,
+  D.; Tassa, T. (2010). ``Improved bounds on Bell numbers and on moments
+  of sums of random variables''. \emph{Probability and Mathematical
+  Statistics}, \textbf{30} (2): 185--205.}
+\end{enumerate}
+
+    \hypertarget{considerar-el-siguiente-algoritmo-se-abre-el-primer-envase-y-se-empaqueta-el-primer-objeto-luego-por-cada-uno-de-los-objetos-restantes-se-prueba-si-cabe-en-el-envase-actual-que-estuxe1-abierto.-si-es-asuxed-se-lo-agrega-a-dicho-envase-y-se-sigue-con-el-siguiente-objeto.-si-no-entra-se-cierra-el-envase-actual-se-abre-uno-nuevo-que-pasa-a-ser-el-envase-actual-se-empaqueta-el-objeto-y-se-prosigue-con-el-siguiente.-este-algoritmo-sirve-como-una-aproximaciuxf3n-para-resolver-el-problema-de-empaquetamiento.-implementar-dicho-algoritmo-analizar-su-complejidad-y-analizar-cuuxe1n-buena-aproximaciuxf3n-es.-para-esto-considerar-lo-siguiente-sea-i-una-instancia-cualquiera-del-problema-de-empaquetamiento-y-zi-una-soluciuxf3n-uxf3ptima-para-dicha-instancia-y-sea-ai-la-soluciuxf3n-aproximada-se-define-fracaizi-leq-ra-para-todas-las-instancias-posibles.-calcular-ra-para-el-algoritmo-dado-demostrando-que-la-cota-estuxe1-bien-calculada.-realizar-mediciones-utilizando-el-algoritmo-exacto-y-la-aproximaciuxf3n-con-el-objetivo-de-verificar-dicha-relaciuxf3n.}{%
+\subsubsection{\texorpdfstring{3) Considerar el siguiente algoritmo: Se
+abre el primer envase y se empaqueta el primer objeto, luego por cada
+uno de los objetos restantes se prueba si cabe en el envase actual que
+está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el
+siguiente objeto. Si no entra, se cierra el envase actual, se abre uno
+nuevo que pasa a ser el envase actual, se empaqueta el objeto y se
+prosigue con el siguiente. Este algoritmo sirve como una aproximación
+para resolver el problema de empaquetamiento. Implementar dicho
+algoritmo, analizar su complejidad, y analizar cuán buena aproximación
+es. Para esto, considerar lo siguiente: Sea \(I\) una instancia
+cualquiera del problema de empaquetamiento, y \(z(I)\) una solución
+óptima para dicha instancia, y sea \(A(I)\) la solución aproximada, se
+define \(\frac{A(I)}{z(I)} \leq r(A)\) para todas las instancias
+posibles. Calcular \(r(A)\) para el algoritmo dado, demostrando que la
+cota está bien calculada. Realizar mediciones utilizando el algoritmo
+exacto y la aproximación, con el objetivo de verificar dicha
+relación.}{3) Considerar el siguiente algoritmo: Se abre el primer envase y se empaqueta el primer objeto, luego por cada uno de los objetos restantes se prueba si cabe en el envase actual que está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el siguiente objeto. Si no entra, se cierra el envase actual, se abre uno nuevo que pasa a ser el envase actual, se empaqueta el objeto y se prosigue con el siguiente.   Este algoritmo sirve como una aproximación para resolver el problema de empaquetamiento. Implementar dicho algoritmo, analizar su complejidad, y analizar cuán buena aproximación es. Para esto, considerar lo siguiente: Sea I una instancia cualquiera del problema de empaquetamiento, y z(I) una solución óptima para dicha instancia, y sea A(I) la solución aproximada, se define \textbackslash frac\{A(I)\}\{z(I)\} \textbackslash leq r(A) para todas las instancias posibles. Calcular r(A) para el algoritmo dado, demostrando que la cota está bien calculada. Realizar mediciones utilizando el algoritmo exacto y la aproximación, con el objetivo de verificar dicha relación.}}\label{considerar-el-siguiente-algoritmo-se-abre-el-primer-envase-y-se-empaqueta-el-primer-objeto-luego-por-cada-uno-de-los-objetos-restantes-se-prueba-si-cabe-en-el-envase-actual-que-estuxe1-abierto.-si-es-asuxed-se-lo-agrega-a-dicho-envase-y-se-sigue-con-el-siguiente-objeto.-si-no-entra-se-cierra-el-envase-actual-se-abre-uno-nuevo-que-pasa-a-ser-el-envase-actual-se-empaqueta-el-objeto-y-se-prosigue-con-el-siguiente.-este-algoritmo-sirve-como-una-aproximaciuxf3n-para-resolver-el-problema-de-empaquetamiento.-implementar-dicho-algoritmo-analizar-su-complejidad-y-analizar-cuuxe1n-buena-aproximaciuxf3n-es.-para-esto-considerar-lo-siguiente-sea-i-una-instancia-cualquiera-del-problema-de-empaquetamiento-y-zi-una-soluciuxf3n-uxf3ptima-para-dicha-instancia-y-sea-ai-la-soluciuxf3n-aproximada-se-define-fracaizi-leq-ra-para-todas-las-instancias-posibles.-calcular-ra-para-el-algoritmo-dado-demostrando-que-la-cota-estuxe1-bien-calculada.-realizar-mediciones-utilizando-el-algoritmo-exacto-y-la-aproximaciuxf3n-con-el-objetivo-de-verificar-dicha-relaciuxf3n.}}
+
+    El algoritmo se encuentra en el archivo
+\href{algoritmos/greedy_consigna.py}{\texttt{algoritmos/greedy\_consigna.py}}.
+Tiene complejidad \(O(n)\) en tiempo. A continuación un ejemplo de su
+ejecución:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{algoritmos}\PY{n+nn}{.}\PY{n+nn}{greedy\PYZus{}consigna} \PY{k+kn}{import} \PY{n}{greedy\PYZus{}consigna}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{99}\PY{p}{)}
+
+\PY{n}{objects} \PY{o}{=}  \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{x}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tamaños: }\PY{l+s+si}{\PYZob{}}\PY{n}{objects}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{solution} \PY{o}{=} \PY{n}{greedy\PYZus{}consigna}\PY{p}{(}\PY{n}{objects}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Solución: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ envases}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{solution}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Tamaños: [0.328, 0.512, 0.175, 0.969, 0.192, 0.434, 0.702, 0.953, 0.009, 0.993,
+0.23, 0.253, 0.623, 0.506, 0.071, 0.605]
+
+Solución: 11 envases
+[[0.328, 0.512], [0.175], [0.969], [0.192, 0.434], [0.702], [0.953, 0.009],
+[0.993], [0.23, 0.253], [0.623], [0.506, 0.071], [0.605]]
+    \end{Verbatim}
+
+    Dados: - Un conjunto de objetos: \(T = \{T_1, T_2, \dotsb , T_n\}\), con
+\(T_i \in (0, 1]\) - Una solución al problema, es decir, un conjunto de
+envases con los objetos de \(T\): \(E = \{E_1, E_2, \dotsb, E_k\}\) - La
+cantidad de envases: \(k = |E|\)
+
+La solución óptima sería \(z(I)=k\) mínimo, y esta acotada por
+\(z(I) \geq \left\lceil \sum\limits_{t \in T} t \right\rceil \geq \sum\limits_{t \in T} t\),
+ya que a lo sumo podemos llenar perfectamente \(k-1\) envases y poner
+los objetos restantes en el último. También sabemos que \(z(I) \leq n\),
+ya que la peor solución sería cada objeto en un envase distinto.
+
+El peor caso de esta aproximación sería cuando no pone un objeto en un
+envase anterior porque no entra (cualquier otro caso, mejora la solución
+de la aproximación sin que necesariamente mejore la óptima). Si pasa
+para todos los objetos, daría como resultado una solución \(A(I) = n\).
+Para ello, se tiene que dar que \(T_i + T_{i+1} > 1\) para todos los
+objetos consecutivos. Entonces: \[
+z(I) \geq \sum\limits_{t \in T} t = T_1 + T_2 + T_3 + T_4 + \dotsb + T_n > 1 + 1 + \dotsb \\
+= \left\{
+    \begin{aligned}
+        &\frac{n}{2} &\text{si n es par} \\
+        &\frac{n-1}{2} + T_n &\text{si n es impar}
+    \end{aligned}
+\right.
+\] Notar que para \(n\) impar,
+\(z(I) > \frac{n-1}{2} + T_n > \frac{n-1}{2}\). Nunca va a valer
+exactamente \(\frac{n-1}{2}\) por la condición de \(T_i + T_{i+1} > 1\)
+y también porque \(T_i > 0\). Como para \(n\) impar \(\frac{n-1}{2}\) es
+un entero, tenemos que el mínimo \(z(I)\) es el entero siguiente:
+\(z(I) \geq \frac{n-1}{2} + 1 = \frac{n+1}{2} > \frac{n}{2}\). Por lo
+tanto, vale la misma desigualdad \(z(I) > \frac{n}{2}\) para \(n\) par e
+impar.
+
+\[
+\Rightarrow z(I) > \frac{n}{2} \Rightarrow \frac{1}{z(I)} < \frac{2}{n} \Rightarrow \frac{A(I)}{z(I)} < n \times \frac{2}{n} = 2
+\] \[
+\therefore r(A) \leq 2
+\]
+
+Las mediciones y gráficos se realizan al final del informe.
+
+    \hypertarget{opcional-implementar-alguna-otra-aproximaciuxf3n-u-algoritmo-greedy-que-les-parezca-de-interuxe9s.-comparar-sus-resultados-con-los-dados-por-la-aproximaciuxf3n-del-punto-3.-indicar-y-justificar-su-complejidad.}{%
+\subsubsection{4) {[}Opcional{]} Implementar alguna otra aproximación (u
+algoritmo greedy) que les parezca de interés. Comparar sus resultados
+con los dados por la aproximación del punto 3. Indicar y justificar su
+complejidad.}\label{opcional-implementar-alguna-otra-aproximaciuxf3n-u-algoritmo-greedy-que-les-parezca-de-interuxe9s.-comparar-sus-resultados-con-los-dados-por-la-aproximaciuxf3n-del-punto-3.-indicar-y-justificar-su-complejidad.}}
+
+    El algoritmo propuesto ordena los objetos de mayor a menor y coloca cada
+objeto en el envase más vacío. Si no entra en ninguno, crea un nuevo
+envase. La complejidad del algoritmo es \(O(n \log n)\) en tiempo, ya
+que ordena los objetos y luego los recorre una vez realizando
+operaciones constantes y logarítmicas. Por cada vez que recorre un
+objeto, busca el envase más vacío. Como son como mucho \(n\) envases,
+esto se hace en \(O(log(n))\) utilizando un heap.
+
+Se encuentra en el archivo
+\href{algoritmos/greedy_alternativo.py}{\texttt{algoritmos/greedy\_alternativo.py}}.
+A continuación un ejemplo de su ejecución:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{algoritmos}\PY{n+nn}{.}\PY{n+nn}{greedy\PYZus{}alternativo} \PY{k+kn}{import} \PY{n}{greedy\PYZus{}alternativo}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{99}\PY{p}{)}
+
+\PY{n}{objects} \PY{o}{=}  \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{x}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tamaños: }\PY{l+s+si}{\PYZob{}}\PY{n}{objects}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{solution} \PY{o}{=} \PY{n}{greedy\PYZus{}alternativo}\PY{p}{(}\PY{n}{objects}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Solución: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ envases}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{solution}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Tamaños: [0.328, 0.512, 0.175, 0.969, 0.192, 0.434, 0.702, 0.953, 0.009, 0.993,
+0.23, 0.253, 0.623, 0.506, 0.071, 0.605]
+
+Solución: 9 envases
+[[0.175, 0.071, 0.009], [0.512, 0.328], [0.605, 0.253], [0.623, 0.23], [0.953],
+[0.969], [0.702, 0.192], [0.993], [0.506, 0.434]]
+    \end{Verbatim}
+
+    \hypertarget{comparaciuxf3n-de-los-algoritmos}{%
+\subsubsection{Comparación de los
+algoritmos}\label{comparaciuxf3n-de-los-algoritmos}}
+
+    Para comparar los algoritmos, hicimos pruebas guardando la solución
+obtenida y el tiempo empleado para cada algoritmo. A continuación se
+definen los parámetros utilizados para dichas pruebas.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N\PYZus{}MIN} \PY{o}{=} \PY{l+m+mi}{2}   \PY{c+c1}{\PYZsh{} Mínima cantidad de objetos con los que probar los algoritmos}
+\PY{n}{N\PYZus{}MAX} \PY{o}{=} \PY{l+m+mi}{25}  \PY{c+c1}{\PYZsh{} Máxima cantidad de objetos con los que probar los algoritmos}
+\PY{n}{S} \PY{o}{=} \PY{l+m+mi}{10}      \PY{c+c1}{\PYZsh{} Cantidad de muestras para cada N}
+\PY{n}{P} \PY{o}{=} \PY{l+m+mi}{15}      \PY{c+c1}{\PYZsh{} Cantidad de puntos entre 0 y N a probar}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Código para medición de los tiempos:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{typing} \PY{k+kn}{import} \PY{n}{Callable}\PY{p}{,} \PY{n}{TypeVar}
+\PY{k+kn}{from} \PY{n+nn}{time} \PY{k+kn}{import} \PY{n}{time}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{algoritmos} \PY{k+kn}{import} \PY{n}{Algorithm}
+\PY{k+kn}{from} \PY{n+nn}{algoritmos}\PY{n+nn}{.}\PY{n+nn}{backtracking} \PY{k+kn}{import} \PY{n}{backtracking}
+
+\PY{n}{T} \PY{o}{=} \PY{n}{TypeVar}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{T}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{time\PYZus{}func}\PY{p}{(}\PY{n}{func}\PY{p}{:} \PY{n}{Callable}\PY{p}{[}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{T}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n+nb}{tuple}\PY{p}{[}\PY{n+nb}{float}\PY{p}{,} \PY{n}{T}\PY{p}{]}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Devuelve el tiempo que tarda en ejecutarse la función y su resultado}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{start} \PY{o}{=} \PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{ret} \PY{o}{=} \PY{n}{func}\PY{p}{(}\PY{p}{)}
+    \PY{k}{return} \PY{n}{time}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{start}\PY{p}{,} \PY{n}{ret}
+
+\PY{c+c1}{\PYZsh{} Algoritmo \PYZhy{}\PYZgt{} n objetos \PYZhy{}\PYZgt{} [V resultados]}
+\PY{n}{Data} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{[}\PY{n}{Algorithm}\PY{p}{,} \PY{n+nb}{dict}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{list}\PY{p}{[}\PY{n+nb}{int} \PY{o}{|} \PY{n+nb}{float}\PY{p}{]}\PY{p}{]}\PY{p}{]}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{N\PYZus{}MIN}\PY{p}{,} \PY{n}{N\PYZus{}MAX}\PY{p}{,} \PY{n}{P}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Resultados obtenidos}
+\PY{n}{solutions}\PY{p}{:} \PY{n}{Data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{a}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:} \PY{p}{[}\PY{k+kc}{None}\PY{p}{]}\PY{o}{*}\PY{n}{S} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{x}\PY{p}{\PYZcb{}} \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n}{Algorithm}\PY{p}{\PYZcb{}}
+\PY{c+c1}{\PYZsh{} Tiempos medidos}
+\PY{n}{times}\PY{p}{:} \PY{n}{Data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{a}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:} \PY{p}{[}\PY{k+kc}{None}\PY{p}{]}\PY{o}{*}\PY{n}{S} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{x}\PY{p}{\PYZcb{}} \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n}{Algorithm}\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} Devuelve (n, sample, Algoritmo \PYZhy{}\PYZgt{} (solución, tiempo))}
+\PY{k}{def} \PY{n+nf}{run}\PY{p}{(}\PY{n}{n}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,} \PY{n}{sample}\PY{p}{:} \PY{n+nb}{int}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n+nb}{tuple}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{dict}\PY{p}{[}\PY{n}{Algorithm}\PY{p}{,} \PY{n+nb}{tuple}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{float}\PY{p}{]}\PY{p}{]}\PY{p}{]}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Ejecuta los algoritmos con n objetos y devuelve los resultados}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{n}{n}\PY{o}{*}\PY{l+m+mi}{123456} \PY{o}{+} \PY{n}{sample}\PY{p}{)}
+    
+    \PY{n}{objects} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+    \PY{n}{results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{n}{best\PYZus{}approx} \PY{o}{=} \PY{k+kc}{None}
+    \PY{k}{for} \PY{n}{al} \PY{o+ow}{in} \PY{p}{(}\PY{n}{Algorithm}\PY{o}{.}\PY{n}{GREEDY}\PY{p}{,} \PY{n}{Algorithm}\PY{o}{.}\PY{n}{GREEDY\PYZus{}ALT}\PY{p}{)}\PY{p}{:}
+        \PY{n}{t}\PY{p}{,} \PY{n}{solution} \PY{o}{=} \PY{n}{time\PYZus{}func}\PY{p}{(}\PY{k}{lambda}\PY{p}{:} \PY{n}{al}\PY{o}{.}\PY{n}{func}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{objects}\PY{p}{)}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{n}{al}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)}\PY{p}{,} \PY{n}{t}\PY{p}{)}
+        \PY{k}{if} \PY{n}{best\PYZus{}approx} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{or} \PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{best\PYZus{}approx}\PY{p}{)}\PY{p}{:}
+            \PY{n}{best\PYZus{}approx} \PY{o}{=} \PY{n}{solution}
+
+    \PY{n}{t}\PY{p}{,} \PY{n}{solution} \PY{o}{=} \PY{n}{time\PYZus{}func}\PY{p}{(}\PY{k}{lambda}\PY{p}{:} \PY{n}{backtracking}\PY{p}{(}\PY{n}{objects}\PY{p}{,} \PY{n}{better\PYZus{}than}\PY{o}{=}\PY{n}{best\PYZus{}approx}\PY{p}{)}\PY{p}{)}
+    \PY{n}{results}\PY{p}{[}\PY{n}{Algorithm}\PY{o}{.}\PY{n}{EXACT}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{solution}\PY{p}{)}\PY{p}{,} \PY{n}{t}\PY{p}{)}
+    \PY{k}{return} \PY{n}{n}\PY{p}{,} \PY{n}{sample}\PY{p}{,} \PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{concurrent}\PY{n+nn}{.}\PY{n+nn}{futures} \PY{k+kn}{import} \PY{n}{ProcessPoolExecutor}\PY{p}{,} \PY{n}{as\PYZus{}completed}
+
+\PY{k}{def} \PY{n+nf}{log}\PY{p}{(}\PY{n}{completed}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{s}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Timing algorithms: }\PY{l+s+si}{\PYZob{}}\PY{l+m+mi}{100}\PY{o}{*}\PY{n}{completed}\PY{o}{/}\PY{p}{(}\PY{n}{S}\PY{o}{*}\PY{n}{P}\PY{p}{)}\PY{+w}{ }\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}. Last completed: [n=}\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, sample=}\PY{l+s+si}{\PYZob{}}\PY{n}{s}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{]}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{futures} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{with} \PY{n}{ProcessPoolExecutor}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{p}\PY{p}{:}
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{x}\PY{p}{:}
+        \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{:}
+            \PY{n}{futures}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{p}\PY{o}{.}\PY{n}{submit}\PY{p}{(}\PY{n}{run}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{s}\PY{p}{)}\PY{p}{)}
+    \PY{n}{completed} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n}{as\PYZus{}completed}\PY{p}{(}\PY{n}{futures}\PY{p}{)}\PY{p}{:}
+        \PY{n}{n}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{results} \PY{o}{=} \PY{n}{r}\PY{o}{.}\PY{n}{result}\PY{p}{(}\PY{p}{)}
+        \PY{n}{completed} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{for} \PY{n}{a}\PY{p}{,} \PY{p}{(}\PY{n}{solution}\PY{p}{,} \PY{n}{time}\PY{p}{)} \PY{o+ow}{in} \PY{n}{results}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{solutions}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{n}{s}\PY{p}{]} \PY{o}{=} \PY{n}{solution}
+            \PY{n}{times}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{n}{s}\PY{p}{]} \PY{o}{=} \PY{n}{time}
+        \PY{n}{log}\PY{p}{(}\PY{n}{completed}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{s}\PY{p}{)}
+        
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Done}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Done
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{json} 
+\PY{k+kn}{import} \PY{n+nn}{os}
+
+\PY{k}{def} \PY{n+nf}{save}\PY{p}{(}\PY{n}{path}\PY{p}{:} \PY{n+nb}{str}\PY{p}{,} \PY{n}{data}\PY{p}{)}\PY{p}{:}
+    \PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cant\PYZus{}objetos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb}{int}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{resultados}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{a}\PY{p}{:} \PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{data}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{]} \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n}{data}\PY{p}{\PYZcb{}}\PY{p}{\PYZcb{}} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{x}\PY{p}{]}
+    \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{path}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+        \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{n}{json}\PY{o}{.}\PY{n}{dumps}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{indent}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pruebas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+    \PY{n}{os}\PY{o}{.}\PY{n}{makedirs}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pruebas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{save}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pruebas/soluciones.json}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{solutions}\PY{p}{)}
+\PY{n}{save}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pruebas/tiempos.json}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{times}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{gruxe1ficos}{%
+\subparagraph{Gráficos}\label{gruxe1ficos}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{ticker}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}tight\PYZus{}layout}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{PlotData} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{[}\PY{n}{Algorithm}\PY{p}{,} \PY{n+nb}{dict}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{float}\PY{p}{]}\PY{p}{]}
+\PY{k}{def} \PY{n+nf}{show}\PY{p}{(}\PY{n}{ax}\PY{p}{:} \PY{n}{plt}\PY{o}{.}\PY{n}{Axes}\PY{p}{,} \PY{n}{data}\PY{p}{:} \PY{n}{PlotData}\PY{p}{,} \PY{n}{y\PYZus{}label}\PY{p}{:} \PY{n+nb}{str}\PY{p}{,} \PY{n}{title}\PY{p}{:} \PY{n+nb}{str}\PY{p}{,}  \PY{n}{log}\PY{p}{:} \PY{n+nb}{bool} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n}{data}\PY{p}{:}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{n+nb}{str}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de objetos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{n}{y\PYZus{}label}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{n}{title}\PY{p}{)}
+    \PY{k}{if} \PY{n}{log}\PY{p}{:}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yscale}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{y}\PY{p}{,}\PY{n}{pos}\PY{p}{:} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZob{}\PYZob{}}\PY{l+s+s1}{:.}\PY{l+s+si}{\PYZob{}:1d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{maximum}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{avg}\PY{p}{(}\PY{n}{data}\PY{p}{:} \PY{n+nb}{dict}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{list}\PY{p}{[}\PY{n+nb}{int} \PY{o}{|} \PY{n+nb}{float}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n+nb}{dict}\PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{float}\PY{p}{]}\PY{p}{:}
+    \PY{k}{return} \PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{measures}\PY{p}{)} \PY{k}{for} \PY{n}{x}\PY{p}{,} \PY{n}{measures} \PY{o+ow}{in} \PY{n}{data}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+
+\PY{n}{show}\PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{p}{\PYZob{}}\PY{n}{a}\PY{p}{:} \PY{n}{avg}\PY{p}{(}\PY{n}{s}\PY{p}{)} \PY{k}{for} \PY{n}{a}\PY{p}{,} \PY{n}{s} \PY{o+ow}{in} \PY{n}{solutions}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}} \PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de envases}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de envases en función de la cantidad de objetos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{show}\PY{p}{(}\PY{n}{ax2}\PY{p}{,} \PY{p}{\PYZob{}}\PY{n}{a}\PY{p}{:} \PY{n}{avg}\PY{p}{(}\PY{n}{s}\PY{p}{)} \PY{k}{for} \PY{n}{a}\PY{p}{,} \PY{n}{s} \PY{o+ow}{in} \PY{n}{times}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tiempo (s)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tiempo de ejecución en función de la cantidad de objetos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{log}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{informe_files/informe_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{Primer gráfico}
+
+El gráfico de la izquierda muestra la solución obtenida promedio para
+las pruebas, en función de la cantidad de objetos. Podemos ver que el
+algoritmo Greedy alternativo propuesto, en la mayoría de los casos,
+obtiene la solución exacta del problema que encontramos con el algoritmo
+de backtracking. Esto no es así con el algoritmo Greedy de la consigna,
+que pareciera desviarse cada vez más de la solución exacta a medida que
+aumenta la cantidad de objetos.
+
+\textbf{Segundo gráfico}
+
+El gráfico de la derecha muestra el tiempo empleado en segundos (escala
+logarítimica), en función de la cantidad de objetos. Claramente el
+algoritmo de backtracking toma muchísimo más tiempo que los otros dos,
+debido a su complejidad exponencial \(O(B_n)\). Los algoritmos Greedy
+tienen un rendimiento muy superior, casi instantáneo para esta cantidad
+de elementos. El algoritmo de la consigna parece ser levemente más
+rápido que el alternativo, lo cual es acorde a sus complejidades
+computacionales (\(O(n)\) vs.~\(O(n log(n))\)). Aun así, es una entrada
+muy pequeña elementos como para destacar una diferencia notable.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Algoritmo \PYZhy{}\PYZgt{} n objetos \PYZhy{}\PYZgt{} estadística}
+\PY{n}{right}\PY{p}{:} \PY{n}{PlotData} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{error}\PY{p}{:} \PY{n}{PlotData} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+\PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{p}{(}\PY{n}{Algorithm}\PY{o}{.}\PY{n}{GREEDY}\PY{p}{,} \PY{n}{Algorithm}\PY{o}{.}\PY{n}{GREEDY\PYZus{}ALT}\PY{p}{)}\PY{p}{:}
+    \PY{n}{r} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{n}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{100} \PY{k}{if} \PY{n}{s}\PY{o}{==}\PY{n}{s\PYZus{}exact} \PY{k}{else} \PY{l+m+mi}{0} \PY{k}{for} \PY{n}{s}\PY{p}{,} \PY{n}{s\PYZus{}exact} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{solutions}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{,} \PY{n}{solutions}\PY{p}{[}\PY{n}{Algorithm}\PY{o}{.}\PY{n}{EXACT}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}\PY{p}{]} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{x}\PY{p}{\PYZcb{}}
+    \PY{n}{e} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{n}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{100}\PY{o}{*}\PY{p}{(}\PY{n}{s}\PY{o}{\PYZhy{}}\PY{n}{s\PYZus{}exact}\PY{p}{)}\PY{o}{/}\PY{n}{s\PYZus{}exact} \PY{k}{for} \PY{n}{s}\PY{p}{,} \PY{n}{s\PYZus{}exact} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{solutions}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{,} \PY{n}{solutions}\PY{p}{[}\PY{n}{Algorithm}\PY{o}{.}\PY{n}{EXACT}\PY{p}{]}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}\PY{p}{]} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{x}\PY{p}{\PYZcb{}}
+    \PY{n}{right}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{=} \PY{n}{avg}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+    \PY{n}{error}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{=} \PY{n}{avg}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{a}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{Solución óptima el }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{right}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{+w}{ }\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} de las veces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{Error máximo del }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{max}\PY{p}{(}\PY{n}{x}\PY{+w}{ }\PY{k}{for}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o+ow}{in}\PY{+w}{ }\PY{n}{e}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{+w}{ }\PY{k}{for}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o+ow}{in}\PY{+w}{ }\PY{n}{y}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{Error promedio del }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{error}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{+w}{ }\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}tight\PYZus{}layout}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{show}\PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{right}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Porcentaje}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Porcentaje de obtención de soluciones óptimas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{show}\PY{p}{(}\PY{n}{ax2}\PY{p}{,} \PY{n}{error}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Porcentaje}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Error promedio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Greedy consigna:
+        Solución óptima el 26.67\% de las veces
+        Error máximo del 50.00\%
+        Error promedio del 16.07\%
+
+Greedy alternativo:
+        Solución óptima el 97.33\% de las veces
+        Error máximo del 12.50\%
+        Error promedio del 0.28\%
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{informe_files/informe_27_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    En estas estadísticas y gráficos comparamos exclusivamente los
+algoritmos Greedy. Podemos ver que para las pruebas realizadas, el
+algoritmo Greedy de la consigna solo obtuvo la solución óptima alrededor
+de un cuarto de las veces, a contraste del alternativo que las obtuvo
+casi siempre.
+
+El error máximo en el algoritmo de la consigna fue del \(50\%\). Era
+esperable que sea menor a \(100\%\) debido a la prueba de la
+2-aproximación. El error máximo del alternativo fue mucho menor,
+\(12.5\%\). Los errores promedio también siguen esta tendencia:
+\(16.07\%\) vs \(0.28\%\).
+
+\textbf{Primer gráfico}
+
+El gráfico de la izquierda muestra el procentaje de soluciones óptimas
+obtenidas para las muestras con cada cantidad de objetos. Otra vez
+podemos ver lo mismo: el algoritmo alternativo suele tener \(100\%\) y
+no bajó de \(80\%\), el de la consigna hubo casos que incluso no obtuvo
+ninguna solución óptima y parece ir empeorando a medida que aumenta la
+cantidad de objetos.
+
+\textbf{Segundo gráfico}
+
+El gráfico de la derecha muestra el porcentaje de error promedio para
+las muestras con cada cantidad de objetos. Muy similar al anterior, el
+alternativo cerca del \(0\%\) y el de la consigna va aumentando.
+
+A modo de conclusión, tiene sentido que el algoritmo de la consigna
+empeore considerablemente a medida que aumentan los objetos: una vez que
+cierra un envase, ya no lo utiliza más, aunque queden muchísimos objetos
+que aún puedan entrar en ese envase.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

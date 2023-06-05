@@ -1,3 +1,12 @@
 .mypy_cache
 .vscode
 **/__pycache__
+
+# latex stuff
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.out
+informe_files
