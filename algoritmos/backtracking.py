@@ -9,8 +9,7 @@ def backtracking(
     Encuentra la solución óptima al problema de empaquetamiento con backtracking.
     Parámetros:
         objects: lista de objetos a empaquetar
-        debug: si es True, imprime información la cota inferior y las soluciones
-            que va encontrando
+        debug: si es True, imprime la cota inferior y las soluciones que va encontrando
         better_than: solucion preexistente opcional que se utiliza para podar
             soluciones que no son mejores que esta
     """
